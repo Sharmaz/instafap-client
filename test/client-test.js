@@ -1,9 +1,9 @@
 'use strict'
 
 const test = require('ava')
+const nock = require('nock')
 const instafap = require('../')
 const fixtures = require('./fixtures')
-const nock = require('nock')
 
 let options = {
   endpoints: {
@@ -86,30 +86,44 @@ test('likePicture', async t => {
 test('listPictures', async t => {
   const client = t.context.client
 
-  let image = fixtures.getImages(3)
+  let images = fixtures.getImages(3)
 
   nock(options.endpoints.pictures)
     .get('/list')
-    .reply(200, image)
+    .reply(200, images)
 
   let result = await client.listPictures()
 
-  t.deepEqual(result, image)
+  t.deepEqual(result, images)
 })
 
 test('listPicturesByTag', async t => {
   const client = t.context.client
 
-  let image = fixtures.getImages(3)
+  let images = fixtures.getImages(3)
   let tag = 'instafap'
 
   nock(options.endpoints.pictures)
     .get(`/tag/${tag}`)
-    .reply(200, image)
+    .reply(200, images)
 
   let result = await client.listPicturesByTag(tag)
 
-  t.deepEqual(result, image)
+  t.deepEqual(result, images)
+})
+
+test('getUser', async t => {
+  const client = t.context.client
+
+  let user = fixtures.getUser()
+
+  nock(options.endpoints.users)
+    .get(`/${user.username}`)
+    .reply(200, user)
+
+  let result = await client.getUser(user.username)
+
+  t.deepEqual(result, user)
 })
 
 test('saveUser', async t => {
@@ -128,20 +142,6 @@ test('saveUser', async t => {
     .reply(201, user)
 
   let result = await client.saveUser(newUser)
-
-  t.deepEqual(result, user)
-})
-
-test('getUser', async t => {
-  const client = t.context.client
-
-  let user = fixtures.getUser()
-
-  nock(options.endpoints.users)
-    .get(`/${user.username}`)
-    .reply(200, user)
-
-  let result = await client.getUser(user.username)
 
   t.deepEqual(result, user)
 })

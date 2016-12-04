@@ -3,10 +3,8 @@
 const uuid = require('uuid-base62')
 
 const fixtures = {
-
   getImage () {
     let id = uuid.uuid()
-
     return {
       description: 'an #awesome picture with #tags #instafap',
       tags: [ 'awesome', 'tags', 'instafap' ],
@@ -31,7 +29,7 @@ const fixtures = {
     return {
       id: uuid.uuid(),
       name: 'A random user',
-      username: 'instafap',
+      username: `user_${uuid.v4()}`,
       createdAt: new Date().toString()
     }
   }

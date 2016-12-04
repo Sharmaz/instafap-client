@@ -23,6 +23,7 @@
   "devDependencies": {
     "ava": "^0.17.0",
     "babel-eslint": "^7.1.1",
+    "instafap-db": "Sharmaz/instafap-db",
     "nock": "^9.0.2",
     "standard": "^8.5.0",
     "uuid-base62": "^0.1.0"
